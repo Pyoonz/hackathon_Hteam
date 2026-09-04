@@ -1,0 +1,40 @@
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}ぬまりば{% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/color.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='images/bottom_nav.css') }}">
+
+        {% block css %}{% endblock %}
+ </head>
+
+ <body>
+    {% include "common/header.html" %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages" aria-live="polite">
+                {% for category, message in messages %}
+                    <p class="flash-message flash-message--{{ category }}">
+                        {{ message }}
+                    </p>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% include "common/bottom_nav.html" %}
+    {% include "common/footer.html" %}
+ </body>
+</html>

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム - ぬまりば{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post/timeline.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="timeline-container">
+    <div class="timeline-heading">
+        <h1>タイムライン</h1>
+
+        <a class="button" href="{{ url_for('posts.create_page') }}">新しく投稿する</a>
+    </div>
+
+    {% if posts %}
+        <div class="post-list">
+            {% for post in posts %}
+                <article class="post-card">
+                    <header class="post-user">
+                        <a href="{{ url_for('users.get_user', user_id=post.user_id) }}">
+                            {% if post.profile_image_url %}
+                                <img src="{{ post.profile_image_url }}"
+                                     alt="{{ post.username }}さんのアイコン"
+                                     class="user-icon"
+                                >
+                            {% endif %}
+
+                            <span>{{ post.username }}</span>
+                        </a>
+                    </header>
+
+                    <p class="post-content">
+                        {{ post.content }}
+                    </p>
+
+                    {% if post.images %}
+                        <div class="post-images">
+                            {% for image in post.images %}
+                                <img src="{{ image.image_url }}" 
+                                     alt="投稿画像" 
+                                     loading="lazy"
+                                >
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <footer class="post-footer">
+                        <a href="{{ url_for('posts.get_post', post_id=post.id) }}">
+                            コメント {{ post.comment_count }}件
+                        </a>
+
+                        <span>
+                            リアクション {{ post.reaction_count }}件
+                        </span>
+
+                        <time datetime="{{ post.created_at.isoformat() }}">
+                            {{ post.created_at.strftime('%Y年%m月%d日 %H:%M') }}
+                        </time>
+                    </footer>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>まだ投稿がありません。</p>
+    {% endif %}
+</section>
+{% endblock %}

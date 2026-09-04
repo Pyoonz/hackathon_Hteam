@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}ページが見つかりません - ぬまりば{% endblock %}
+
+{% block css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/error.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<section class="error-container">
+    <p class="error-code">404</p>
+    <h1>ページが見つかりません</h1>
+
+    <p>
+        URLが間違っているか、ページが削除された可能性があります。
+    </p>
+
+    <a class="button" href="{{ url_for('posts.timeline') }}">
+        ホームへ戻る
+    </a>
+</section>
+{% endblock %}

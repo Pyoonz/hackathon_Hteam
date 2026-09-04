@@ -1,0 +1,25 @@
+SHOW VARIABLES LIKE 'character_set%';{% extends "base.html" %}
+
+{% block title %}エラーが発生しました - ぬまりば{% endblock %}
+
+{% block css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/error.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<section class="error-container">
+    <p class="error-code">500</p>
+    <h1>エラーが発生しました。</h1>
+
+    <p>
+        申し訳ありません。時間を置いてから、もう一度お試しください。
+    </p>
+    
+    <a class="button" href="{{ url_for('posts.timeline') }}">
+        ホームへ戻る
+    </a>
+</section>
+{% endblock %}

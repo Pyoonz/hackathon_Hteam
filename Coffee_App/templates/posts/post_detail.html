@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}投稿詳細 - ぬまりば{% endblock %}
+
+{% block content %}
+<section class="post-detail-container">
+    <article class="post-card">
+        <header class="post-user">
+            <a href="{{ url_for('users.profile', user_id=post.user.id) }}">
+                <img
+                    src="{{ post.user.profile_image_url or url_for('static', filename='image/default_icon.png') }}"
+                    alt="{{ post.user.username}}さんのアイコン"
+                    class="user-icon"
+                >
+                {{ post.user.username }}
+            </a>
+        </header>
+
+        {% if post.category %}
+            <p>{{ post.category.category_name }}</p>
+        {% endif %}
+
+        <p>{{ post.content }}</p>
+
+        {% for image in post.images %}
+            <img src="{{ image.image_url }}" alt="投稿画像">
+        {% endfor %}
+
+        <time datetime="{{ post.created_at.isoformat() }}">
+            {{ post.created_at.strftime('%Y年%m月%d日 %H:%M') }}
+        </time>
+    </article>
+
+    <section aria-labelledby="comment-heading">
+        <h2 id="comment-heading">コメント</h2>
+
+        <form
+            method="post"
+            action="{{ url_for('posts.comment_create', post_id=post.id) }}"
+            >
+            {% if form %}
+                {{ form.hidden_tag() }}
+            {% endif %}
+
+            <label for="comment-content">コメントを入力</label>
+            <textarea
+                id="comment-content"
+                name="content"
+                rows="4"
+                maxlength="1000"
+                required
+            ></textarea>
+
+            <button type="submit">コメントする</button>
+        </form>
+
+        {% if post.comments %}
+            <ul class="comment-list">
+                {% for comment in post.comments %}
+                    <li>
+                        <a href="{{ url_for('users.profile', user_id=comment.user.id) }}">
+                            {{ comment.user.username }}
+                        </a>
+                        <p>{{ comment.content }}</p>
+
+                        <time datetime="{{ comment.created_at.isoformat() }}">
+                            {{ comment.created_at.strftime('%Y年%m月%d日 %H:%M') }}
+                        </time>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>コメントはまだありません。</p>
+        {% endif %}
+    </section>
+
+    {% if current_user.id == post.user_id %}
+        <section class="danger-zone">
+            <h2>投稿の削除</h2>
+
+            <form
+                method="post"
+                action="{{ url_for('posts.post_delete', post_id=post.id) }}"
+                onsubmit="return confirm('この投稿を削除しますか？');"
+            >
+                <button type="submit" class="button-danger">
+                    投稿を削除する
+                </button>
+            </form>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}設定 - ぬまりば{% endblock %}
+
+{% block content %}
+<section class="mypage-container">
+    <h1>設定</h1>
+
+    <p>ユーザー設定画面です。</p>
+
+    <ul class="settings-menu">
+        <li>
+            <a href="{{ url_for('posts.timeline') }}">
+                タイムラインに戻る
+            </a>
+        </li>
+    </ul>
+
+    <form method="post" action="{{ url_for('auth.logout') }}">
+        <button type="submit">ログアウト</button>
+    </form>
+</section>
+{% endblock %}

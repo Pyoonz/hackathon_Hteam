@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}検索 - ぬまりば{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search/search.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="search-container">
+    <h1>投稿を検索</h1>
+
+    <form method="get" action="{{ url_for('search.search_page') }}">
+        <div class="form-group">
+            <label for="keyword">キーワード</label>
+            <input type="search" id="keyword" name="keyword" value="{{ request.args.get('keyword', '') }}"
+                placeholder="豆、器具、お店など">
+        </div>
+
+        <div class="form-group">
+            <label for="category">カテゴリー</label>
+
+            <select id="category" name="category">
+                <option value="">すべてのカテゴリー</option>
+
+                {% for category in categories %}
+                <option
+                    value="{{ category.id }}"
+                    {% if request.args.get('category')|int==category.id %}
+                        selected 
+                    {% endif %}
+                >
+                    {{ category.category_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">検索</button>
+    </form>
+</section>
+{% endblock %}

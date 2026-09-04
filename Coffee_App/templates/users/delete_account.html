@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}アカウント削除 - ぬまりば{% endblock %}
+
+{% block content %}
+<section class="delete-account-container">
+    <h1>アカウント削除</h1>
+
+    <div class="warning-message">
+        <p>アカウントを削除すると、元に戻せません。</p>
+        <p>確認のため、現在のパスワードを入力してください。</p>
+    </div>
+
+    <form
+        method="post"
+        action="{{ url_for('users.delete_account') }}"
+        onsubmit="return confirm('本当にアカウントを削除しますか？');"
+    >
+        {% if form %}
+            {{ form.hidden_tag() }}
+        {% endif %}
+
+        <div class="form-group">
+            <label for="password">現在のパスワード</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <input
+                type="checkbox"
+                id="delete_confirm"
+                name="delete_confirm"
+                value="yes"
+                required
+            >
+            <label for="delete_confirm">
+                アカウント削除に同意します
+            </label>
+        </div>
+
+        <button type="submit" class="button-danger">
+            アカウントを削除する
+        </button>
+    </form>
+
+    <a href="{{ url_for('users.mypage') }}">
+        マイページに戻る
+    </a>
+</section>
+{% endblock %}

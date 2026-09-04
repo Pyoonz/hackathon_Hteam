@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }}の投稿 - ぬまりば{% endblock %}
+
+{% block content %}
+<section class="user-posts-container">
+    <header class="profile-summary">
+        <img
+            src="{{ user.profile_image_url or url_for('static', filename='image/default_icon.png') }}"
+            alt="{{ user.username }}さんのアイコン"
+            class="profile-icon"
+        >
+        <div>
+            <h1>{{ user.username }}</h1>
+
+            {% if user.profile_text %}
+                <p>{{ user.profile_text }}</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <h2>投稿一覧</h2>
+
+    {% if posts %}
+        {% for post in posts %}
+            <article class="post-card">
+                <p>{{ post.content }}</p>
+
+                <a href="{{ url_for('posts.post_detail', post_id=post.id) }}">
+                    投稿詳細を見る
+                </a>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>投稿はまだありません。</p>
+    {% endif %}
+</section>
+{% endblock %}
