@@ -1,4 +1,3 @@
-import re
 from flask import Blueprint, redirect, render_template, request, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -26,18 +25,6 @@ def signup():
     if not username or not email or not password:
         return {
             "message": "username, email, password are required"
-        }, 400
-
-    #パスワードの条件をチェック
-    if (
-        len(password) < 8
-        or len(password) > 255
-        or not re.search(r"[a-z]", password)
-        or not re.search(r"[A-Z]", password)
-        or not re.search(r"[0-9]", password)
-    ):
-        return {
-            "message": "Password must be 8-255 characters and include lowercase, uppercase, and a number."
         }, 400
 
     try:
